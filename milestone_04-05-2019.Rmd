@@ -1,0 +1,13 @@
+---
+title: "Milestone 04-05-2019"
+author: "Seeam S. Noor"
+date: "April 4, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Milestone
+April 5: Rough Github repo, with all necessary data, and reproducible Rmd document. The Rmd must contain two items. First, a brief description of the data, where you got, what you have done with it so far and what you plan to do. Second, a beautiful ggplot2 graphic using some of the data.
