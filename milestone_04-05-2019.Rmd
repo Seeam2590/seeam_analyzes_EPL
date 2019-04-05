@@ -5,9 +5,63 @@ date: "April 4, 2019"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warning = FALSE, message = FALSE, error = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+
+# Reading in data from the stats.csv file that we have
+stats <- read_csv('stats.csv')
 ```
 
-## Milestone
-April 5: Rough Github repo, with all necessary data, and reproducible Rmd document. The Rmd must contain two items. First, a brief description of the data, where you got, what you have done with it so far and what you plan to do. Second, a beautiful ggplot2 graphic using some of the data.
+## Description of the Data
+  
+The Data has been taken from the [Kaggle profile of Zaeem Nalla](https://www.kaggle.com/zaeemnalla/premier-league#stats.csv). The creator of the dataset has made the data publicly available and ready for use in personal projects.  
+
+The data was acquired from the English Premier League Official website. It contains the match results of all football (also known as soccer) matches in the [English Premier League](https://www.premierleague.com/) seasons starting from 2006/2007 through 2017/2018.
+
+There are two data sets.
+
+1. Results.csv - Results of 4560 Premier League Matches. Dimensions of the data = 4561 X 6
+
+2. Stats.csv - Basic statistics collected from Opta (official stats collector of the Premier League) of each team in every season (season totals) from 2006/2007 to 2017/2018.
+Dimensions of the data = 204 X 42
+
+## Progress and Plans
+
+Since I am from Bangladesh, the goal is to make the project something English Premier League Fans from Bangladesh would enjoy exploring.
+
+So, at first I took a look at the data available and made a short list of what interesting analysis I could be doing. Then, I reached out to [Plaantik](http://plaantik.com/), a platform dedicated to football fans of Bangladesh with over [81,500 Facebook followers](https://www.facebook.com/plaantik/). Plaantik found the idea of a data analysis project to be interesting and made a public Facebook post asking its followers what type of analysis they would be interested in knowing. The response was overwhelming and it can be found [here](https://www.facebook.com/plaantik/posts/2370059273026323).
+
+The Facebook post was a good way of gauging specific fan interest in analysis that they'd enjoy and provides a very good idea of where I can start.
+
+## Interesting Plot
+  
+
+```{r plot, warning = FALSE, message = FALSE, error = FALSE, echo = FALSE}
+
+stats %>%
+  # Grouping by teams
+  group_by(team) %>%
+  # Summing wins of teams across all seasons
+  summarize(total_wins = sum(wins)) %>%
+  # Arraning data with teams with highest wins on top
+  arrange(desc(total_wins)) %>%
+  # Taking the top 10 teams
+  head(n = 10) %>%
+  # Turning the teams into factors ordered by wins to make graph look nicer
+  mutate(team = fct_reorder(team, total_wins)) %>%
+  # Plotting total wins for each team
+  ggplot(aes(x = team, y = total_wins)) +
+  geom_col() + 
+  # Flipping the graph to make it niceer
+  coord_flip() + 
+  # Providing title, subtitle, axes labels and data source credit
+  labs(x = NULL,
+       y = 'Total wins',
+       title = 'Top 10 teams with most wins from 2006-2018 in English Premier League',
+       subtitle = 'Manchester United wins the race',
+       caption = 'Source: Official Website of English Premier League') +
+   # Adding appropriate data labels to make the graph look nicer
+   geom_text(aes(label = total_wins, color = '#a00901', size = 3, fontface = 'bold', hjust = 0.99), show.legend = FALSE)
+```
