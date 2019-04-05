@@ -63,5 +63,5 @@ stats %>%
        subtitle = 'Manchester United wins the race',
        caption = 'Source: Official Website of English Premier League') +
    # Adding appropriate data labels to make the graph look nicer
-   geom_text(aes(label = total_wins, color = '#a00901', size = 3, fontface = 'bold', hjust = 0.99), show.legend = FALSE)
+   geom_text(aes(label = total_wins, color = '#a00901', size = 3, fontface = 'bold', hjust = 1.1), show.legend = FALSE)
 ```
