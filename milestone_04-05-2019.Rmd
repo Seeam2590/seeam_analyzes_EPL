@@ -18,14 +18,20 @@ stats <- read_csv('stats.csv')
   
 The Data has been taken from the [Kaggle profile of Zaeem Nalla](https://www.kaggle.com/zaeemnalla/premier-league#stats.csv). The creator of the dataset has made the data publicly available and ready for use in personal projects.  
 
-The data was acquired from the English Premier League Official website. It contains the match results of all football (also known as soccer) matches in the [English Premier League](https://www.premierleague.com/) seasons starting from 2006/2007 through 2017/2018.
+The data was acquired from the English Premier League Official website. It contains the match results of all football (also known as soccer) matches in the [English Premier League](https://www.premierleague.com/) seasons starting from 2006/2007 through 2017/2018.  
+  
+Additionally, I will also do a mini data analysis on the Laliga (Spanish Football Leageue) as well. 
+The data for that can be found [here](https://www.kaggle.com/spn007/la-liga-dataset#_=_). 
 
-There are two data sets.
+There are three data sets.
 
 1. Results.csv - Results of 4560 Premier League Matches. Dimensions of the data = 4561 X 6
 
 2. Stats.csv - Basic statistics collected from Opta (official stats collector of the Premier League) of each team in every season (season totals) from 2006/2007 to 2017/2018.
-Dimensions of the data = 204 X 42
+Dimensions of the data = 204 X 42  
+  
+3. LaLiga_dataset.csv - Results of all matches of laliga from 1970/1971 to 2016/2017 season.  
+Dimensions of the data = 908 X 16
 
 ## Progress and Plans
 
