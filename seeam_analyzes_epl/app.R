@@ -10,39 +10,23 @@ library(DT)
 library(leaflet)
 library(rgdal)
 library(scales)
+library(ggthemes)
+library(plotly)
 
-# # Here, we load the datasets that will be used for the dashboard.
-# # This data has all the top partners for each year to be used in table and graph.
-# partners <- read_rds("top_partners_simp.rds")
-# 
-# # This data has information on most frequently exported commodities by year. 
-# commodities <- read_rds("commodity_totals.rds")
-# 
-# # This data has information on what fraction of imports India takes up with its exports
-# # for a specific commodity in a specific country.
-# alpha_two <- read.csv("Alphas2.csv")
-# 
-# # Here, we add a new column that assigns a rank to each country based on how important
-# # the country is as an export partner. We get this from the position of the country in overall exports.
-# # Later in the code, we use this rank to decide whether or not to show country on the graph. 
-# # This is important for the numerical slider input. 
-# alpha_two <- alpha_two %>%
-#     mutate(newcol = case_when(Import.Country == "United States of America" ~ 1,
-#                               Import.Country == "United Arab Emirates" ~ 2,
-#                               Import.Country == "China, Hong Kong SAR" ~ 3,
-#                               Import.Country == "China" ~ 4,
-#                               Import.Country == "Singapore" ~ 5,
-#                               Import.Country == "United Kingdom" ~ 6,
-#                               Import.Country == "Germany" ~ 7,
-#                               Import.Country == "Netherlands" ~ 8,
-#                               Import.Country == "Belgium" ~ 9,
-#                               Import.Country == "Japan" ~ 10,
-#                               Import.Country == "South Africa" ~ 11,
-#                               Import.Country == "Turkey" ~ 12,
-#                               Import.Country == "Italy" ~ 13,
-#                               Import.Country == "France" ~ 14,
-#                               Import.Country == "Malaysia" ~ 15,
-#                               Import.Country == "Spain" ~ 16))
+# This data has information on what fraction of imports India takes up with its exports
+# for a specific commodity in a specific country.
+
+laliga_stats <- read_csv("LaLiga_dataset.csv") %>%
+    separate(season, c("season_start","season_end"), sep = "-") %>%
+    mutate(season_start = as.numeric(season_start), season_end = as.numeric(season_end) + 1900) %>%
+    mutate(season_end = ifelse(season_start >= 2000, season_end + 100, season_end)) %>%
+    mutate(season_end = ifelse(season_start == 1999, 2000, season_end))
+
+results <- read_csv("results.csv")
+
+stats <- read_csv("stats.csv") %>%
+    separate(season, c("season_start","season_end"), sep = "-") %>%
+    mutate(season_start = as.numeric(season_start), season_end = as.numeric(season_end))
 
 # Define UI for the application
 ui <- dashboardPage(
@@ -53,11 +37,10 @@ ui <- dashboardPage(
         # I added interesting icons to match the topics of the tabs. 
         sidebarMenu(
             menuItem("Home", tabName = "dashboard", icon = icon("home")),
-            menuItem("Attack Stats", tabName = "graphs", icon = icon("rocket")),
-            menuItem("Defence Stats", tabName = "exports", icon = icon("shield-alt")),
-            menuItem("Set Pieces", tabName = "commodities", icon = icon("bullseye")),
-            menuItem("La Liga", tabName = "snapshot", icon = icon("futbol")),
-            menuItem("Fun Facts for Fans", tabName = "snapshot2", icon = icon("coffee"))
+            menuItem("Attack Stats", tabName = "attack", icon = icon("rocket")),
+            menuItem("Defence Stats", tabName = "defence", icon = icon("shield-alt")),
+            menuItem("La Liga", tabName = "laliga", icon = icon("futbol")),
+            menuItem("Fun Facts for Fans", tabName = "funfact", icon = icon("coffee"))
         )
     ),
     dashboardBody(
@@ -69,6 +52,10 @@ ui <- dashboardPage(
             # Including a graph is nice as we are looking at international trade data, but this is just for aesthetics.
             tabItem(tabName = "dashboard",
                     h1("Let's analyze the English Premier League!"),
+                
+                    h3("Starting with a Scavenger Hunt for You!"),
+                    p("In case you are wondering what my favorite team from the English Premier League is, look no further. The map below has an explicit hint (the marker) on what my favorite team is. Zoom in to check it out. You can move around in the map as well. If you are an English Premier League fan, chances are that you will recognize the name of the stadium the marker is located at to correctly identify my favorite team."),
+                    leafletOutput("mymap", height = "500"),
                     h3("About the project"),
                     p("Hi, I am Seeam Shahid Noor and I am very happy that you decided to check this project out. I was born and brought up in Dhaka, Bangladesh and Football (aka soccer) has always been a huge part of my life growing up. People outside my country might not know this but the football fan culture is huge in Bangladesh. So, when given the chance to present a data analysis project for the class", tags$a("Gov 1005 at Harvard", http = "https://www.davidkane.info/files/gov_1005_spring_2019.html")," I decided to take it to present some basic but interesting stats on the teams of ", tags$a("the English Premier League,",href = "https://en.wikipedia.org/wiki/Premier_League")," the most watched sports league in the world"),
                     h3("Content"),
@@ -82,93 +69,108 @@ The Facebook post was a good way of gauging specific fan interest in analysis th
                     p("The Data has been taken from the",  tags$a("Kaggle profile of Zaeem Nalla", href = "https://www.kaggle.com/zaeemnalla/premier-league#stats.csv"),". The creator of the dataset has made the data publicly available and ready for use in personal projects. The data was acquired from the English Premier League Official website. It contains the match results of all football matches in the ", tags$a("English Premier League", href = "https://www.premierleague.com/"), "seasons starting from 2006/2007 through 2017/2018."),
                     p("Additionally, I will also do a mini data analysis on the Laliga (Spanish Football Leageue) as well. 
 The data for that can be found ", tags$a("here.", href = "https://www.kaggle.com/spn007/la-liga-dataset#_=_")),
-                      p("We used three data sets for our analysis:
+                    p("We used three data sets for our analysis:
 ", tags$br(), "1. Results.csv - Results of 4560 Premier League Matches. Dimensions of the data = 4561 X 6
 ", tags$br(), "2. Stats.csv - Basic statistics collected from Opta (official stats collector of the Premier League) of each team in every season (season totals) from 2006/2007 to 2017/2018.
 Dimensions of the data = 204 X 42  
 ", tags$br(), "3. LaLiga_dataset.csv - Results of all matches of laliga from 1970/1971 to 2016/2017 season.  
-Dimensions of the data = 908 X 16"),
-                    h3("Fun Fact: Scavenger Hunt for You!"),
-                    p("In case you are wondering what my favorite team from the English Premier League is, look no further. The map below has an explicit hint (the marker) on what my favorite team is. Zoom in to check it out. You can move around in the map as well. If you are a EPL fan, chances are that you will recognize the name of the stadium the marker is located at to correctly identify my favorite team."),
-                    leafletOutput("mymap", height = "500")
+Dimensions of the data = 908 X 16")
             ),
             
             # Second tab content
             # On this tab, the user chooses which year they want to see.
             # After selecting the year, they see a bar graph of the top India export partners.
             # There is a select height for the graph. 
-            tabItem(tabName = "graphs",
-                    h4("India Top Export Partners"),
-                    h6("India's largest export partners stayed relatively constant over the four year period: 
-                 the United States of America, United Arab Emirates, Hong Kong, and China occupied the top four positions each year. 
-                 Saudi Arabia, Singapore, and the United Kingdom were also consistently among top export partners.
-                 In 2014-2016, Both the USA and UAE had over double the amount of imports from India than any other partner."),
+            tabItem(tabName = "attack",
+                    h2("Interesting Stats on Offensive Plays"),
+                    h3("Displaying the Top Ten for each stat"),
+                    h4("How to use this tool:"),
+                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts"),
                     box(
-                        selectInput("year_choice", "Year:", 
-                                    choices = c(2014, 2015, 2016, 2017)), inline = TRUE
-                    )#,
-                    #plotOutput("distPlot2", height = 275)
+                        sliderInput("year_1",
+                                    "Premier League Seasons to include:",
+                                    min = 2006,
+                                    max = 2017,
+                                    value = c(2006,2017))
+                    ),
+                    box(
+                        selectInput("attack", "Which attack stat do you want to see:", 
+                                    choices =  c("Goals" = "goals",
+                                                 "Crossbar Hits" = "hit_woodwork",
+                                                 "Free Kicks Scored" = "att_freekick_goal",
+                                                 "Penalties Scored" = "att_pen_goal",
+                                                 "Counter Attack Goals" = "goal_fastbreak"), selected = "goals"), inline = TRUE
+                    ),
+                    plotOutput("Plot1", height = 500)
+                    #DT::dataTableOutput("commodityPlot")
             ),
             
             # Third tab content
             # This tab includes the information from the first tab (top exporters),
             # however, it has a function where people can search by country name.
             # Also, unlike the previous tab which only shows top, this continues the list. 
-            tabItem(tabName = "exports",
-                    h4("India Top Export Partners"),
+            tabItem(tabName = "defence",
+                    h2("Interesting Stats on Defensive Plays"),
+                    h3("Displaying the Top Ten for each stat"),
+                    h4("How to use this tool:"),
+                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts"),
                     box(
-                        selectInput("year_choice2", "Year:", 
-                                    choices = c(2014, 2015, 2016, 2017)),
-                        helpText("Data from United Nations COMTRADE Database.")
-                    )#,
-                    #DT::dataTableOutput("distPlot")
-            ),
-            
-            # Fourth tab content
-            # This tab allows users to see the top exported commodity items by year
-            # This requires a new dataset with merged HS commodity names (see analysis file)
-            tabItem(tabName = "commodities",
-                    h4("India Top Commodities"),
-                    h6("The top export commodities for India over the four year period remained constant.
-                 Mineral fuels and pearls (diamonds, other gems) were most important, followed by vehicles, nuclear products and chemical goods.
-                 However, 2014 had a larger trade value of exports than the following years."),
+                        sliderInput("year_2",
+                                    "Premier League Seasons to include:",
+                                    min = 2006,
+                                    max = 2017,
+                                    value = c(2006,2017))
+                    ),
                     box(
-                        selectInput("year_choice3", "Year:",
-                                    choices = c(2014, 2015, 2016, 2017)),
-                        helpText("Commodities below sorted by two-digit HS code.")
-                    )#,
+                        selectInput("defence", "Which defence stat do you want to see:", 
+                                    choices =  c("Red Cards" = "total_red_card",
+                                                 "Clean Sheets" = "clean_sheet",
+                                                 "Saves" = "saves",
+                                                 "Interceptions" = "interception",
+                                                 "Goalline clearances" = "clearance_off_line"), selected = "total_red_card"), inline = TRUE
+                    ),
+                    plotOutput("Plot2", height = 500)
                     #DT::dataTableOutput("commodityPlot")
             ),
             
-            # Fifth tab content
+            # Fourth tab content
             # This tab also requires a new dataset, specifically one on India's fraction of exports.
             # It provides detailed information on the fraction of each country's iron/steel exports
             # that are provided by India, and how this fraction changed over time. 
             # By playing with the slider, users can change how many of the top export partners are chosen.
-            tabItem(tabName = "snapshot",
-                    h5("Iron and Steel Exports"),
-                    h6("The graph below plots the share India has for a given country's imports
-                 of iron and steel, for each month between January 2014 and August 2018.
-                 The higher the fraction, the more important India's exports are for that country
-                 in the given month period."), 
-                    h6("I chose this commodity good because iron and steel are relatively homogenous goods
-                 which these countries can get from a variety of sources, so looking at how much they choose
-                 to get from India over time is informative of the quality of relationship.
-                 During the latter half of 2017, Hong Kong got a higher fraction of its iron and steel from India."),
+            tabItem(tabName = "laliga",
+                    h2("Interesting Stats on La Liga"),
+                    h3("Displaying an Interactive Time series for a club in Laliga for a stat of Your Choice"),
+                    h4("How to use this tool:"),
+                    p("1. Select a LaLiga team", tags$br(), "Note: For simplicity, you can only choose a club that has won the Laliga at least once", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Hover over the interactivegraph and enjoy the stats!"),
                     box(
-                        sliderInput("countries",
-                                    "Number of Countries:",
-                                    min = 1,
-                                    max = 15,
-                                    value = 10)
-                    )#,
-                    #plotOutput("complot1", height = 300)
+                        selectInput("club_3", "Choose a club", 
+                                    choices =  c("Real Madrid", "Barcelona", "Atletico de Madrid", "Athletic Club", "Deportivo", "Real Sociedad", "Valencia", "Sevilla", "Betis"), selected = "Real Madrid")
+                    ),
+                    box(
+                        selectInput("laliga", "Which stat do you want to see:", 
+                                    choices =  c("Home wins" = "home_win",
+                                                 "Away wins" = "away_win",
+                                                 "Total Wins" = "matches_won",
+                                                 "Total points" = "points",
+                                                 "Goals Scored" = "goals_scored",
+                                                 "Goals Conceded" = "goals_conceded"), selected = "goals_scored")
+                    ),
+                    br(),
+                    br(),
+                    br(),
+                    br(),
+                    hr(),
+                    plotlyOutput("Plot3", height = 500),
+                    h4("Notes"),
+                    p("a. We only have data from 1970/1971 season to 2016/2017 season", tags$br(), "b. Each team played 34 matches in the seasons from 1970 - 1985", tags$br(), "c. Each team played 44 matches in the 1986-1987 season", tags$br(), "d. Each team played 38 matches from then onwards")
+                    #DT::dataTableOutput("commodityPlot")
             ),
             
             # We provide another snapshot of a different commodity, this time coffee/tea
             # We provide some background info on the good.
             # The functionality is the same. 
-            tabItem(tabName = "snapshot2",
+            tabItem(tabName = "funfact",
                     h5("Coffee and Tea Exports"),
                     h6("The graph below plots the share India has for a given country's imports
                  of coffee, tea, mate, and spices for each month between January 2014 and August 2018.
@@ -195,32 +197,59 @@ Dimensions of the data = 908 X 16"),
 # This is the server component of the app, which takes the inputs into account. 
 server <- function(input, output) { 
     
-    # The user chooses a year from the selection and the partners are ranked for that year.
-    # datareact <- reactive({
-    #     partners %>% 
-    #         filter(year == input$year_choice2) %>%
-    #         arrange(desc(yearly_total))
-    # })
+    datareact1 <- reactive({
+        stats %>%
+            filter(season_start >= input$year_1[1] & season_start <= input$year_1[2]) %>%
+            # Grouping by teams
+            group_by(team) %>%
+            # Summing wins of teams across all seasons
+            summarise(total = sum(!! rlang::sym(input$attack))) %>%
+            # Arraning data with teams with highest wins on top
+            arrange(desc(total)) %>%
+            # Taking the top 10 teams
+            head(n = 10) %>%
+            # Turning the teams into factors ordered by wins to make graph look nicer
+            mutate(team = fct_reorder(team, total))
+            
+    })
     # 
     # # Like above, user chooses a year and the partners are ranked. 
     # # There is no interest in seeing whole world, only by country .
     # # Only the top 10 partners are relevant for the graph. 
-    # datareact2 <- reactive({
-    #     partners %>% 
-    #         filter(year == input$year_choice) %>%
-    #         filter(partner != "World") %>%
-    #         arrange(desc(yearly_total)) %>%
-    #         head(10)
-    # })
-    # 
+    datareact2 <- reactive({
+        stats %>%
+            filter(season_start >= input$year_2[1] & season_start <= input$year_2[2]) %>%
+            # Grouping by teams
+            group_by(team) %>%
+            # Summing wins of teams across all seasons
+            summarise(total = sum(!! rlang::sym(input$defence))) %>%
+            # Arraning data with teams with highest wins on top
+            arrange(desc(total)) %>%
+            # Taking the top 10 teams
+            head(n = 10) %>%
+            # Turning the teams into factors ordered by wins to make graph look nicer
+            mutate(team = fct_reorder(team, total))
+        
+    })
     # # Like above, user chooses a year and now the commodities are ranked in order.
     # # The order is size of total commodity exports in billions
-    # datareact3 <- reactive({
-    #     commodities %>% 
-    #         filter(year == input$year_choice3) %>%
-    #         arrange(desc(commodity_total))
-    # })
-    # 
+    datareact3 <- reactive({
+        laliga_stats %>%
+            filter(club == input$club_3)
+    })
+    
+    plotreact3 <- reactive({
+        datareact3() %>%
+        plot_ly(x = ~season_start, y = ~eval(as.name(input$laliga)),
+                hoverinfo = 'text',
+                text = ~paste('Start of season:', season_start, "<br>",
+                              'Stat selected:', eval(as.name(input$laliga)))) %>%
+        add_markers() %>%
+        layout(xaxis = list(title = 'Start of Season', showgrid = FALSE),
+               yaxis = list(title = 'Selected Stat', showgrid = FALSE)
+                )
+    
+    })
     # # Here, the user selects how many countries they would like to see.
     # # We ranked the countries above in the variable newcol.
     # # Here, you select only a certain number of the countries (top x number)
@@ -254,35 +283,59 @@ server <- function(input, output) {
     # # We choose a color matching India's flag colors orange and green
     # # We make some adjustments to make the labels of the data and bars readable
     # # We also remove the gridlines to make the graph better looking. 
-    # output$distPlot2 <- renderPlot({
-    #     datareact2() %>%
-    #         ggplot( 
-    #             aes(x = reorder(partner, -yearly_total), 
-    #                 y = yearly_total)) + 
-    #         geom_bar(stat="identity", color = "green", fill = "orangered2") + 
-    #         geom_text(aes(label = yearly_total), vjust = 1.5, colour = "white", size = 4) +
-    #         labs(x = NULL, y = "Trade Value (Billions USD)") + 
-    #         theme(axis.text.x = element_text(angle = 60, hjust = 1), 
-    #               panel.grid.major = element_blank(),
-    #               panel.grid.minor = element_blank()) 
-    # })
+    output$Plot1 <- renderPlot({
+         datareact1() %>%
+            # Plotting total wins for each team
+            ggplot(aes(x = team, y = total)) +
+            geom_col() + 
+            # Flipping the graph to make it niceer
+            coord_flip() + 
+            # Providing title, subtitle, axes labels and data source credit
+            labs(x = NULL,
+                 y = "Selected Attack Stat",
+                 title = 'Showing Top 10 teams in the English Premier League across included seasons',
+                 subtitle = ifelse(datareact1()$total[1] == datareact1()$total[2], paste(datareact1()$team[1], "&",datareact1()$team[2],  "wins the race"), paste(datareact1()$team[1], "wins the race")),
+                 caption = 'Source: Official Website of English Premier League') +
+            # # Adding appropriate data labels to make the graph look nicer
+            geom_text(aes(label = total, color = '#a00901', size = 3, fontface = 'bold', hjust = 1.1), show.legend = FALSE) +
+            theme_minimal() +
+            theme(
+                panel.grid.major.y = element_blank(),
+                panel.grid.minor.y = element_blank(),
+                panel.grid.major.x = element_blank(),
+                panel.grid.minor.x = element_blank()
+            )
+     })
     # 
     # # This is the graph for the snapshot of iron and steel exports
     # # We are only looking at the commodity for Iron and Steel
     # # We add labels for the x and y axis that are necessary.
-    # output$complot1 <- renderPlot({
-    #     datareact4() %>%
-    #         filter(!Alpha > 1) %>%
-    #         mutate(Month = as.Date(paste("01", Month,sep = "-"),"%d-%b-%y")) %>%
-    #         filter(Commodity == "Iron and steel") %>%
-    #         ggplot(aes(x = Month, y = Alpha, color = Import.Country)) + geom_point() +
-    #         xlab("Date") +
-    #         ylab("Fraction of Destination Imports from India") +
-    #         ggtitle("Iron and Steel") +
-    #         labs(caption = "Export Data from United Nations COMTRADE Database") +
-    #         scale_colour_discrete(name = "Import Country")
-    # })
-    # 
+    output$Plot2 <- renderPlot({
+        datareact2() %>%
+            # Plotting total wins for each team
+            ggplot(aes(x = team, y = total)) +
+            geom_col() + 
+            # Flipping the graph to make it niceer
+            coord_flip() + 
+            # Providing title, subtitle, axes labels and data source credit
+            labs(x = NULL,
+                 y = "Selected Defence Stat",
+                 title = 'Showing Top 10 teams in the English Premier League across included seasons',
+                 subtitle = ifelse(datareact2()$total[1] == datareact2()$total[2], paste(datareact2()$team[1], "&",datareact2()$team[2],  "wins the race"), paste(datareact2()$team[1], "wins the race")),
+                 caption = 'Source: Official Website of English Premier League') +
+            # # Adding appropriate data labels to make the graph look nicer
+            geom_text(aes(label = total, color = '#a00901', size = 3, fontface = 'bold', hjust = 1.1), show.legend = FALSE) +
+            theme_minimal() +
+            theme(
+                panel.grid.major.y = element_blank(),
+                panel.grid.minor.y = element_blank(),
+                panel.grid.major.x = element_blank(),
+                panel.grid.minor.x = element_blank()
+            ) 
+    })    
+    output$Plot3 <- renderPlotly({
+        plotreact3()
+    })
     # # This is the graph for the snapshot of coffee/tea exports
     # # We are only looking at the commodity for Coffee and tea
     # # We add labels for the x and y axis that are necessary.
