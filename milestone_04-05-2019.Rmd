@@ -11,7 +11,7 @@ library(tidyverse)
 library(dplyr)
 
 # Reading in data from the stats.csv file that we have
-stats <- read_csv('stats.csv')
+stats <- read_csv('seeam_analyzes_epl/stats.csv')
 ```
 
 ## Description of the Data
