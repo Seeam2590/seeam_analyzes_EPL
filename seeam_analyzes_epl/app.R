@@ -51,9 +51,9 @@ ui <- dashboardPage(
                     p("In case you are wondering what my favorite team from the English Premier League is, look no further. The map below has an explicit hint (the marker) on what my favorite team is. Zoom in to check it out. You can move around in the map as well. If you are an English Premier League fan, chances are that you will recognize the name of the stadium the marker is located at to correctly identify my favorite team."),
                     leafletOutput("mymap", height = "500"),
                     h3("About the project"),
-                    p("Hi, I am Seeam Shahid Noor and I am very happy that you decided to check this project out. I was born and brought up in Dhaka, Bangladesh and Football (aka soccer) has always been a huge part of my life growing up. People outside my country might not know this but the football fan culture is huge in Bangladesh. So, when given the chance to present a data analysis project for the class", tags$a("Gov 1005 at Harvard", http = "https://www.davidkane.info/files/gov_1005_spring_2019.html")," I decided to take it to present some basic but interesting stats on the teams of ", tags$a("the English Premier League,",href = "https://en.wikipedia.org/wiki/Premier_League")," the most watched sports league in the world"),
+                    p("Hi, I am Seeam Shahid Noor and I am very happy that you decided to check this project out. I was born and brought up in Dhaka, Bangladesh and Football (aka soccer) has always been a huge part of my life growing up. People outside my country might not know this but the football fan culture is huge in Bangladesh. So, when given the chance to present a data analysis project for the class", tags$a("Gov 1005 at Harvard", http = "https://www.davidkane.info/files/gov_1005_spring_2019.html")," I decided to take it to present some basic but interesting stats on the teams of ", tags$a("the English Premier League,",href = "https://en.wikipedia.org/wiki/Premier_League")," the most watched sports league in the world."),
                     h3("Content"),
-                    p("The interesting stats presented have been divided into few categories to make them easy to access and understand. The sections can be accessed from the navigation dashboard on the left. The title of the sections are pretty self-explanatory to indicate what the stats will be about. For instance, 'Attack Stats' will show some interesting stats teams had during attacking plays. Finally, I have also decided to add few interesting stats from the Laliga so some of my best friends, who are fans of Barcelona and Real Madrid, doesn't miss out."),
+                    p("The interesting stats presented have been divided into few categories to make them easy to access and understand. The sections can be accessed from the navigation dashboard on the left. The title of the sections are pretty self-explanatory to indicate what the stats will be about. For instance, 'Attack Stats' will show some interesting stats teams had during attacking plays. Finally, I have also decided to add few interesting stats from the Laliga so some of my best friends, who are fans of Barcelona and Real Madrid, don't miss out."),
                     h3("Collaboration"),
                     p("The goal was to make the project something English Premier League Fans from Bangladesh would enjoy exploring.
 
@@ -261,7 +261,7 @@ server <- function(input, output) {
             labs(x = NULL,
                  y = "Selected Attack Stat",
                  title = 'Showing Top 10 teams in the English Premier League across included seasons',
-                 subtitle = ifelse(datareact1()$total[1] == datareact1()$total[2], paste(datareact1()$team[1], "&",datareact1()$team[2],  "wins the race"), paste(datareact1()$team[1], "wins the race")),
+                 subtitle = ifelse(datareact1()$total[1] == datareact1()$total[2], paste(datareact1()$team[1], "&",datareact1()$team[2],  "win the race"), paste(datareact1()$team[1], "wins the race")),
                  caption = 'Source: Official Website of English Premier League') +
             # # Adding appropriate data labels to make the graph look nicer
             geom_text(aes(label = total, color = '#a00901', size = 3, fontface = 'bold', hjust = 1.1), show.legend = FALSE) +
@@ -285,7 +285,7 @@ server <- function(input, output) {
             labs(x = NULL,
                  y = "Selected Defence Stat",
                  title = 'Showing Top 10 teams in the English Premier League across included seasons',
-                 subtitle = ifelse(datareact2()$total[1] == datareact2()$total[2], paste(datareact2()$team[1], "&",datareact2()$team[2],  "wins the race"), paste(datareact2()$team[1], "wins the race")),
+                 subtitle = ifelse(datareact2()$total[1] == datareact2()$total[2], paste(datareact2()$team[1], "&",datareact2()$team[2],  "win the race"), paste(datareact2()$team[1], "wins the race")),
                  caption = 'Source: Official Website of English Premier League') +
             # # Adding appropriate data labels to make the graph look nicer
             geom_text(aes(label = total, color = '#a00901', size = 3, fontface = 'bold', hjust = 1.1), show.legend = FALSE) +
