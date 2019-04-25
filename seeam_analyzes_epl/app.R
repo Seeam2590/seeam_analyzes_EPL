@@ -1,26 +1,23 @@
-# This is the dashboard for the application, which houses five tabs.
-# Each of the five tabs includes different information on India's export sector.
-# Fall 2018 Gov Final Project
+# Spring 2019 Gov Final Project
 # Here, we load the necessary libraries that will be used in the application. 
 library(shiny)
 library(tidyverse)
 library(shinydashboard)
-library(dplyr)
 library(DT)
 library(leaflet)
-library(rgdal)
-library(scales)
 library(ggthemes)
 library(plotly)
 
-# This data has information on what fraction of imports India takes up with its exports
-# for a specific commodity in a specific country.
+
+# Loading the data for 
 
 laliga_stats <- read_csv("LaLiga_dataset.csv") %>%
     separate(season, c("season_start","season_end"), sep = "-") %>%
     mutate(season_start = as.numeric(season_start), season_end = as.numeric(season_end) + 1900) %>%
     mutate(season_end = ifelse(season_start >= 2000, season_end + 100, season_end)) %>%
     mutate(season_end = ifelse(season_start == 1999, 2000, season_end))
+
+# Loading the EPL results dataset
 
 results <- read_csv("results.csv")
 
@@ -33,7 +30,6 @@ ui <- dashboardPage(
     # The overall title of the dashboard 
     dashboardHeader(title = "Seeam & EPL"),
     dashboardSidebar(
-        # There are a total of four main tabs, followed by a snapshot for a commodity. 
         # I added interesting icons to match the topics of the tabs. 
         sidebarMenu(
             menuItem("Home", tabName = "dashboard", icon = icon("home")),
@@ -47,9 +43,7 @@ ui <- dashboardPage(
         tabItems(
             # First tab content
             # This provides information on the contents of the app.
-            # Also, provides info on data resource and some basic summary stats on trade.
-            # Finally, just for the effect, I included a graph on the page that looks nice.
-            # Including a graph is nice as we are looking at international trade data, but this is just for aesthetics.
+
             tabItem(tabName = "dashboard",
                     h1("Let's analyze the English Premier League!"),
                 
@@ -59,7 +53,7 @@ ui <- dashboardPage(
                     h3("About the project"),
                     p("Hi, I am Seeam Shahid Noor and I am very happy that you decided to check this project out. I was born and brought up in Dhaka, Bangladesh and Football (aka soccer) has always been a huge part of my life growing up. People outside my country might not know this but the football fan culture is huge in Bangladesh. So, when given the chance to present a data analysis project for the class", tags$a("Gov 1005 at Harvard", http = "https://www.davidkane.info/files/gov_1005_spring_2019.html")," I decided to take it to present some basic but interesting stats on the teams of ", tags$a("the English Premier League,",href = "https://en.wikipedia.org/wiki/Premier_League")," the most watched sports league in the world"),
                     h3("Content"),
-                    p("The interesting stats presented have been divided into few categories to make them easy to access and understand. The sections can be accessed from the navigation dashboard on the left. The title of the sections are pretty self-explanatory to indicate what the stats will be about. For instance, 'Attack Stats' will show some interesting stats teams had during atacking plays. Finally, I have also decided to add few interesting stats from the Laliga so some of my best friends, who are fans of Barcelona and Real Madrid, doesn't miss out."),
+                    p("The interesting stats presented have been divided into few categories to make them easy to access and understand. The sections can be accessed from the navigation dashboard on the left. The title of the sections are pretty self-explanatory to indicate what the stats will be about. For instance, 'Attack Stats' will show some interesting stats teams had during attacking plays. Finally, I have also decided to add few interesting stats from the Laliga so some of my best friends, who are fans of Barcelona and Real Madrid, doesn't miss out."),
                     h3("Collaboration"),
                     p("The goal was to make the project something English Premier League Fans from Bangladesh would enjoy exploring.
 
@@ -78,9 +72,6 @@ Dimensions of the data = 908 X 16")
             ),
             
             # Second tab content
-            # On this tab, the user chooses which year they want to see.
-            # After selecting the year, they see a bar graph of the top India export partners.
-            # There is a select height for the graph. 
             tabItem(tabName = "attack",
                     h2("Interesting Stats on Offensive Plays"),
                     h3("Displaying the Top Ten for each stat"),
@@ -106,9 +97,6 @@ Dimensions of the data = 908 X 16")
             ),
             
             # Third tab content
-            # This tab includes the information from the first tab (top exporters),
-            # however, it has a function where people can search by country name.
-            # Also, unlike the previous tab which only shows top, this continues the list. 
             tabItem(tabName = "defence",
                     h2("Interesting Stats on Defensive Plays"),
                     h3("Displaying the Top Ten for each stat"),
@@ -130,14 +118,9 @@ Dimensions of the data = 908 X 16")
                                                  "Goalline clearances" = "clearance_off_line"), selected = "total_red_card"), inline = TRUE
                     ),
                     plotOutput("Plot2", height = 500)
-                    #DT::dataTableOutput("commodityPlot")
             ),
             
             # Fourth tab content
-            # This tab also requires a new dataset, specifically one on India's fraction of exports.
-            # It provides detailed information on the fraction of each country's iron/steel exports
-            # that are provided by India, and how this fraction changed over time. 
-            # By playing with the slider, users can change how many of the top export partners are chosen.
             tabItem(tabName = "laliga",
                     h2("Interesting Stats on La Liga"),
                     h3("Displaying an Interactive Time series for a club in Laliga for a stat of Your Choice"),
@@ -164,12 +147,9 @@ Dimensions of the data = 908 X 16")
                     plotlyOutput("Plot3", height = 500),
                     h4("Notes"),
                     p("a. We only have data from 1970/1971 season to 2016/2017 season", tags$br(), "b. Each team played 34 matches in the seasons from 1970 - 1985", tags$br(), "c. Each team played 44 matches in the 1986-1987 season", tags$br(), "d. Each team played 38 matches from then onwards")
-                    #DT::dataTableOutput("commodityPlot")
             ),
             
-            # We provide another snapshot of a different commodity, this time coffee/tea
-            # We provide some background info on the good.
-            # The functionality is the same. 
+            # The fifth tab
             tabItem(tabName = "funfact",
                     h2("Fun Facts for Fans"),
                     h3("Show a team's home/away performance  against all other teams of the English Premier League"),
@@ -210,9 +190,6 @@ server <- function(input, output) {
             
     })
     # 
-    # # Like above, user chooses a year and the partners are ranked. 
-    # # There is no interest in seeing whole world, only by country .
-    # # Only the top 10 partners are relevant for the graph. 
     datareact2 <- reactive({
         stats %>%
             filter(season_start >= input$year_2[1] & season_start <= input$year_2[2]) %>%
@@ -228,8 +205,7 @@ server <- function(input, output) {
             mutate(team = fct_reorder(team, total))
         
     })
-    # # Like above, user chooses a year and now the commodities are ranked in order.
-    # # The order is size of total commodity exports in billions
+    #
     datareact3 <- reactive({
         laliga_stats %>%
             filter(club == input$club_3)
@@ -328,14 +304,24 @@ server <- function(input, output) {
     output$table4 <- DT::renderDataTable({
         tablereact4()
     })
-    
+
+    # Creating the map to be used on home page
+        
     output$mymap <- renderLeaflet({
         leaflet() %>%
             addTiles() %>%
+            
+            # Making sure it has zoom in feature on the location I want
+            
             setView(lng = -2.2913, lat = 53.4631, zoom = 4) %>%
+            
+            # Adding a marker to the location I want
+            
             addMarkers(lng = -2.2913, lat = 53.4631 )
     })
     
 }
+
+# Running the app
 
 shinyApp(ui, server)
