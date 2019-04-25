@@ -1,5 +1,5 @@
-# Final Project - Gov 1005
-## Seeam analyzes the English Premier League
+# Seeam analyzes the English Premier League
+## Final Project - Gov 1005 at Harvard
 This repository contains the final project for the class Gov 1005, Harvard College Spring 2019.
 The project will be a data analysis app-project on the English Premier League
 The official website to the English Premier League: https://www.premierleague.com/ 
