@@ -171,25 +171,22 @@ Dimensions of the data = 908 X 16")
             # We provide some background info on the good.
             # The functionality is the same. 
             tabItem(tabName = "funfact",
-                    h5("Coffee and Tea Exports"),
-                    h6("The graph below plots the share India has for a given country's imports
-                 of coffee, tea, mate, and spices for each month between January 2014 and August 2018.
-                 The higher the fraction, the more important India's exports are for that country
-                 in the given month period. The user can select how many countries he or she
-                 would like to see."),
-                    h6("I chose this commodity good as India is a large exporter of tea (famous for Darjeeling Tea)
-                 and I was interested in which countries rely on India for breakfast! In 2017, the UAE and UK
-                 got a high fraction of this commodity from India, compared to other large partners. Trade partners 
-                 Japan and Malaysia, although smaller overall importers from India, both have substantial shares of their
-                 imports for this commodity coming from India, consistently above 20% in the case of Malaysia."),
+                    h2("Fun Facts for Fans"),
+                    h3("Show a team's home/away performance  against all other teams of the English Premier League"),
+                    h4("How to use this tool:"),
+                    p("1. Select a major English Premier League team", tags$br(), "2. Select whether you want to see the home/away performance of that team", tags$br(), "3. You can use the search function and sort the columns. Enjoy the table!", tags$br(), "Note: For simplicity, you can only choose a club that has a major fan base in Bangladesh. Furthermore, note that our data only includes Premier League seasons from 2006/2007 to 2017/2018"),
+                    h4("Inspiration for this tool:"),
+                    p("A fan from Plaantik asked which team can make it on a cold rainy night at Stoke and I personally thought it was funny and fascinating. Although, it's hard to get data for weather conditions, you can get a simpler answer to that question by choosing a club, choosing Away performance and then seeing how they did against Stoke on the table that appears. Inspiration for Data Science can come from anywhere, so thank you for the question!"),
                     box(
-                        sliderInput("countries2",
-                                    "Number of Countries:",
-                                    min = 1,
-                                    max = 15,
-                                    value = 10)
-                    )#,
-                    #plotOutput("complot2", height = 300)
+                        selectInput("club_4", "Choose a club", 
+                                    choices =  c("Manchester United", "Liverpool", "Chelsea", "Arsenal", "Manchester City", "Tottenham Hotspur"), selected = "Manchester United")
+                    ),
+                    box(
+                        selectInput("side", "Which ground performance do you want to see:", 
+                                    choices =  c("Home" = "home",
+                                                 "Away" = "away"), selected = "home")
+                    ),
+                    DT::dataTableOutput("table4")
             )
         )
     )
@@ -250,39 +247,33 @@ server <- function(input, output) {
                 )
     
     })
-    # # Here, the user selects how many countries they would like to see.
-    # # We ranked the countries above in the variable newcol.
-    # # Here, you select only a certain number of the countries (top x number)
-    # datareact4 <- reactive({
-    #     alpha_two %>%
-    #         filter(newcol <= input$countries)
-    # })
-    # 
-    # # Same functionality as above for coffee and tea exports
-    # datareact5 <- reactive({
-    #     alpha_two %>%
-    #         filter(newcol <= input$countries2)
-    # })
-    # 
-    # # We do not want to show the "World" partner only the individual countries. 
-    # # We also add appropriate column names. 
-    # output$distPlot <- DT::renderDataTable({
-    #     datareact() %>%
-    #         filter(partner != "World") %>%
-    #         datatable(colnames = c('Year', 'Trade Partner', 'Trade Value (Billions USD)'))
-    # })
-    # 
-    # # We add appropriate names for column of table.
-    # # We include the commodity code and simplified name for reference. 
-    # output$commodityPlot <- DT::renderDataTable({
-    #     datareact3() %>%
-    #         datatable(colnames = c('Year', 'Commodity', 'Name', 'Trade Value (Billions USD)')) 
-    # })
-    # 
-    # # This is the barchart for the first tab of the graph
-    # # We choose a color matching India's flag colors orange and green
-    # # We make some adjustments to make the labels of the data and bars readable
-    # # We also remove the gridlines to make the graph better looking. 
+    
+    tablereact4 <- reactive({
+        if(input$side == "home")
+            {
+            tablehome <-
+                results %>%
+                filter(home_team == input$club_4) %>%
+                group_by(away_team, result) %>%
+                select(-home_goals, -away_goals) %>%
+                count() %>%
+                ungroup() %>%
+                spread(key = result, value = n, fill = 0) %>%
+                rename(Opponents = away_team, Losses = A, Tie = D, Wins = H)
+        }
+        else{
+            tableaway <-
+                results %>%
+                filter(away_team == input$club_4) %>%
+                group_by(home_team, result) %>%
+                select(-home_goals, -away_goals) %>%
+                count() %>%
+                ungroup() %>%
+                spread(key = result, value = n, fill = 0) %>%
+                rename(Opponents = home_team, Losses = H, Tie = D, Wins = A)
+        }
+    })
+
     output$Plot1 <- renderPlot({
          datareact1() %>%
             # Plotting total wins for each team
@@ -306,9 +297,6 @@ server <- function(input, output) {
                 panel.grid.minor.x = element_blank()
             )
      })
-    # 
-    # # This is the graph for the snapshot of iron and steel exports
-    # # We are only looking at the commodity for Iron and Steel
     # # We add labels for the x and y axis that are necessary.
     output$Plot2 <- renderPlot({
         datareact2() %>%
@@ -336,28 +324,15 @@ server <- function(input, output) {
     output$Plot3 <- renderPlotly({
         plotreact3()
     })
-    # # This is the graph for the snapshot of coffee/tea exports
-    # # We are only looking at the commodity for Coffee and tea
-    # # We add labels for the x and y axis that are necessary.
-    # # We use the same formatting from the previous page.
-    # output$complot2 <- renderPlot({
-    #     datareact5() %>%
-    #         filter(!Alpha > 1) %>%
-    #         mutate(Month = as.Date(paste("01", Month,sep = "-"),"%d-%b-%y")) %>%
-    #         filter(Commodity == "Coffee, tea, mate and spices") %>%
-    #         ggplot(aes(x = Month, y = Alpha, color = Import.Country)) + geom_point() +
-    #         xlab("Date") +
-    #         ylab("Fraction of Destination Imports from India") +
-    #         ggtitle("Coffee, tea, mate and spices") +
-    #         labs(caption = "Export Data from United Nations COMTRADE Database") +
-    #         scale_colour_discrete(name = "Import Country")
-    # })
-    # 
-    # This map is just for aesthetic effect for the dashboard.
+    
+    output$table4 <- DT::renderDataTable({
+        tablereact4()
+    })
+    
     output$mymap <- renderLeaflet({
         leaflet() %>%
             addTiles() %>%
-            setView(lng = -3.4360, lat = 55.3781, zoom = 4) %>%
+            setView(lng = -2.2913, lat = 53.4631, zoom = 4) %>%
             addMarkers(lng = -2.2913, lat = 53.4631 )
     })
     
