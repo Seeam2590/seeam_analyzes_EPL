@@ -24,3 +24,5 @@ We used three data sets for our analysis:
 1. Results.csv - Results of 4560 Premier League Matches. Dimensions of the data = 4561 X 6  
 2. Stats.csv - Basic statistics collected from Opta (official stats collector of the Premier League) of each team in every season (season totals) from 2006/2007 to 2017/2018. Dimensions of the data = 204 X 42  
 3. LaLiga_dataset.csv - Results of all matches of laliga from 1970/1971 to 2016/2017 season. Dimensions of the data = 908 X 16  
+  
+Note: The folder names 'seeam_analyzes_epl' contains the app file, and the datasets.  
