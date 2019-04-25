@@ -4,3 +4,7 @@
 .Ruserdata
 *.Rproj
 *.docx
+script.R
+*milestone_04-05-2019.html
+*milestone_04-05-2019.Rmd
+*Rsconnect
