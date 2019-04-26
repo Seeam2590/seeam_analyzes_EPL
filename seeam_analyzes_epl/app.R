@@ -76,7 +76,7 @@ Dimensions of the data = 908 X 16")
                     h2("Interesting Stats on Offensive Plays"),
                     h3("Displaying the Top Ten for each stat"),
                     h4("How to use this tool:"),
-                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts"),
+                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts", tags$br(), "Fascinating how Manchester City has the most goals in counter attacks!"),
                     box(
                         sliderInput("year_1",
                                     "Premier League Seasons to include:",
@@ -101,7 +101,7 @@ Dimensions of the data = 908 X 16")
                     h2("Interesting Stats on Defensive Plays"),
                     h3("Displaying the Top Ten for each stat"),
                     h4("How to use this tool:"),
-                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts"),
+                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts", tags$br(), "Chelsea sure knows how to play dirty!"),
                     box(
                         sliderInput("year_2",
                                     "Premier League Seasons to include:",
@@ -125,7 +125,7 @@ Dimensions of the data = 908 X 16")
                     h2("Interesting Stats on La Liga"),
                     h3("Displaying an Interactive Time series for a club in Laliga for a stat of Your Choice"),
                     h4("How to use this tool:"),
-                    p("1. Select a LaLiga team", tags$br(), "Note: For simplicity, you can only choose a club that has won the Laliga at least once", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Hover over the interactivegraph and enjoy the stats!"),
+                    p("1. Select a LaLiga team", tags$br(), "Note: For simplicity, you can only choose a club that has won the Laliga at least once", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Hover over the interactivegraph and enjoy the stats!", tags$br(), "See how Barcelona and Real Madrid's goals tally had an insane surge in the Messi-Ronaldo era!"),
                     box(
                         selectInput("club_3", "Choose a club", 
                                     choices =  c("Real Madrid", "Barcelona", "Atletico de Madrid", "Athletic Club", "Deportivo", "Real Sociedad", "Valencia", "Sevilla", "Betis"), selected = "Real Madrid")
