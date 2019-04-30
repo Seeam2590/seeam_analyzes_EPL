@@ -14,7 +14,7 @@ library(shinythemes)
 
 laliga_stats <- read_csv("LaLiga_dataset.csv") %>%
     
-    # Separating the season column into start and end
+    # Separating the season column into start and ends
     
     separate(season, c("season_start","season_end"), sep = "-") %>%
     
@@ -50,7 +50,7 @@ ui <- dashboardPage(skin = 'red',
     
     # The overall title of the dashboard 
     
-    dashboardHeader(title = "Seeam & EPL"),
+    dashboardHeader(title = "Seeam @Plaantik"),
     dashboardSidebar(
         
         # Creating the dashboard navigation meny with necessary icons. 
@@ -122,7 +122,7 @@ Dimensions of the data = 908 X 16")
                     h2("Interesting Stats on Offensive Plays"),
                     h3("Displaying the Top Ten for each stat"),
                     h4("How to use this tool:"),
-                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts", tags$br(), "Fascinating how Manchester City has the most goals in counter attacks!"),
+                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts", tags$br(), tags$strong("Fascinating how Manchester City has the most goals in counter attacks in the last decade!")),
                     
                     # Slider input which takes the range of seasons to include for output
                     
@@ -158,7 +158,7 @@ Dimensions of the data = 908 X 16")
                     h2("Interesting Stats on Defensive Plays"),
                     h3("Displaying the Top Ten for each stat"),
                     h4("How to use this tool:"),
-                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts", tags$br(), "Chelsea sure knows how to play dirty!"),
+                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts", tags$br(), tags$strong("Chelsea sure knows how to play dirty!")),
                     
                     # Slider input which takes the range of seasons to include for output
                     
@@ -194,7 +194,7 @@ Dimensions of the data = 908 X 16")
                     h2("Interesting Stats on La Liga"),
                     h3("Displaying an Interactive Time series for a club in Laliga for a stat of Your Choice"),
                     h4("How to use this tool:"),
-                    p("1. Select a LaLiga team", tags$br(), "Note: For simplicity, you can only choose a club that has won the Laliga at least once", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Hover over the interactivegraph and enjoy the stats!", tags$br(), "See how Barcelona and Real Madrid's goals tally had an insane surge in the Messi-Ronaldo era!"),
+                    p("1. Select a LaLiga team", tags$br(), "Note: For simplicity, you can only choose a club that has won the Laliga at least once", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Hover over the interactivegraph and enjoy the stats!", tags$br(), tags$strong("See how Barcelona and Real Madrid's goals tally had an insane surge in the Messi-Ronaldo era!")),
                     
                     # Dropdown menu to choose a club from
                     
@@ -246,7 +246,7 @@ Dimensions of the data = 908 X 16")
                     # This tool was inspired by a question from a fan. Providing the story below
                     
                     h4("Inspiration for this tool:"),
-                    p("A fan from Plaantik asked which team can make it on a cold rainy night at Stoke and I personally thought it was funny and fascinating. Although, it's hard to get data for weather conditions, you can get a simpler answer to that question by choosing a club, choosing Away performance and then seeing how they did against Stoke on the table that appears. Inspiration for Data Science can come from anywhere, so thank you for the question!"),
+                    p("A fan from Plaantik asked which team can make it on a cold rainy night at Stoke and I personally thought it was funny and fascinating. Although, it's hard to get data for weather conditions, you can get a simpler answer to that question by choosing a club, choosing Away performance and then seeing how they did against Stoke on the table that appears. Inspiration for Data Science can come from anywhere, so thank you for the question!", tags$br(), tags$strong("Funny how Manchester United's worst home performance is against Manchester City!")),
                     
                     # Providing user a dropdown to choose a team
                     
