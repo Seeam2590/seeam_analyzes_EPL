@@ -72,12 +72,14 @@ ui <- dashboardPage(skin = 'red',
             # This provides information on the contents of the app, credits and data used
 
             tabItem(tabName = "dashboard",
+
                     h1("Let's analyze the English Premier League!"),
                     
                     # Providing a scavenger hunt for the user
-                                    
-                    h3("Starting with a Scavenger Hunt for You!"),
-                    p("In case you are wondering what my favorite team from the English Premier League is, look no further. The map below has an explicit hint (the marker) on what my favorite team is. Zoom in to check it out. You can move around in the map as well. If you are an English Premier League fan, chances are that you will recognize the name of the stadium the marker is located at to correctly identify my favorite team."),
+                    
+                    tags$div(class = "widget-user-header bg-red-active text-center",                
+                        h3("Starting with a Scavenger Hunt for You!"),
+                        p("In case you are wondering what my favorite team from the English Premier League is, look no further. The map below has an explicit hint (the marker) on what my favorite team is. Zoom in to check it out. You can move around in the map as well. If you are an English Premier League fan, chances are that you will recognize the name of the stadium the marker is located at to correctly identify my favorite team.")),
                     
                     # output for the map where scavenger hunt can be played
                     
@@ -121,10 +123,13 @@ Dimensions of the data = 908 X 16")
             # We first describe how to use the tool
             
             tabItem(tabName = "attack",
+                    
                     h2("Interesting Stats on Offensive Plays"),
                     h3("Displaying the Top Ten for each stat"),
-                    h4("How to use this tool:"),
-                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts", tags$br(), tags$strong("Fascinating how Manchester City has the most goals in counter attacks in the last decade!")),
+                    tags$div(class = "widget-user-header bg-red-active text-center",
+                        h4("How to use this tool:"),
+                        p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts", tags$br(), tags$strong("Fascinating how Manchester City has the most goals in counter attacks in the last decade!"))
+                        ),
                     
                     # Slider input which takes the range of seasons to include for output
                     
@@ -159,8 +164,10 @@ Dimensions of the data = 908 X 16")
             tabItem(tabName = "defence",
                     h2("Interesting Stats on Defensive Plays"),
                     h3("Displaying the Top Ten for each stat"),
-                    h4("How to use this tool:"),
-                    p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts", tags$br(), tags$strong("Chelsea sure knows how to play dirty!")),
+                    tags$div(class = "widget-user-header bg-red-active text-center",
+                        h4("How to use this tool:"),
+                        p("1. Select a year range to display the stats for", tags$br(), "Note: As we mentioned before we only have data from 2006/2007 season to 2017/2018 season for the EPL", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Enjoy the charts", tags$br(), tags$strong("Chelsea sure knows how to play dirty!"))
+                        ),
                     
                     # Slider input which takes the range of seasons to include for output
                     
@@ -195,8 +202,10 @@ Dimensions of the data = 908 X 16")
             tabItem(tabName = "laliga",
                     h2("Interesting Stats on La Liga"),
                     h3("Displaying an Interactive Time series for a club in Laliga for a stat of Your Choice"),
-                    h4("How to use this tool:"),
-                    p("1. Select a LaLiga team", tags$br(), "Note: For simplicity, you can only choose a club that has won the Laliga at least once", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Hover over the interactivegraph and enjoy the stats!", tags$br(), tags$strong("See how Barcelona and Real Madrid's goals tally had an insane surge in the Messi-Ronaldo era!")),
+                    tags$div(class = "widget-user-header bg-red-active text-center",
+                        h4("How to use this tool:"),
+                        p("1. Select a LaLiga team", tags$br(), "Note: For simplicity, you can only choose a club that has won the Laliga at least once", tags$br(), "2. Select the stats that you want to see.", tags$br(), "3. Hover over the interactivegraph and enjoy the stats!", tags$br(), tags$strong("See how Barcelona and Real Madrid's goals tally had an insane surge in the Messi-Ronaldo era!"))
+                        ),
                     
                     # Dropdown menu to choose a club from
                     
@@ -231,9 +240,10 @@ Dimensions of the data = 908 X 16")
                     
                     # Notes to explain the anomalies one might observe on the time series
                     
-                    h4("Notes"),
-                    p("a. We only have data from 1970/1971 season to 2016/2017 season", tags$br(), "b. Each team played 34 matches in the seasons from 1970 - 1985", tags$br(), "c. Each team played 44 matches in the 1986-1987 season", tags$br(), "d. Each team played 38 matches from then onwards")
-            ),
+                    tags$div(class = "widget-user-header bg-aqua-active text-center",
+                        h4("Notes"),
+                        p("a. We only have data from 1970/1971 season to 2016/2017 season", tags$br(), "b. Each team played 34 matches in the seasons from 1970 - 1985", tags$br(), "c. Each team played 44 matches in the 1986-1987 season", tags$br(), "d. Each team played 38 matches from then onwards")
+            )),
             
             # The fifth tab
             # This tab is basically a fun way to explore team performances against all other teams
@@ -242,13 +252,17 @@ Dimensions of the data = 908 X 16")
             tabItem(tabName = "funfact",
                     h2("Fun Facts for Fans"),
                     h3("Show a team's home/away performance  against all other teams of the English Premier League"),
-                    h4("How to use this tool:"),
-                    p("1. Select a major English Premier League team", tags$br(), "2. Select whether you want to see the home/away performance of that team", tags$br(), "3. You can use the search function and sort the columns. Enjoy the table!", tags$br(), "Note: For simplicity, you can only choose a club that has a major fan base in Bangladesh. Furthermore, note that our data only includes Premier League seasons from 2006/2007 to 2017/2018"),
+                    tags$div(class = "widget-user-header bg-red-active text-center",
+                        h4("How to use this tool:"),
+                        p("1. Select a major English Premier League team", tags$br(), "2. Select whether you want to see the home/away performance of that team", tags$br(), "3. You can use the search function and sort the columns. Enjoy the table!", tags$br(), "Note: For simplicity, you can only choose a club that has a major fan base in Bangladesh. Furthermore, note that our data only includes Premier League seasons from 2006/2007 to 2017/2018")
+                        ),
                     
                     # This tool was inspired by a question from a fan. Providing the story below
                     
-                    h4("Inspiration for this tool:"),
-                    p("A fan from Plaantik asked which team can make it on a cold rainy night at Stoke and I personally thought it was funny and fascinating. Although, it's hard to get data for weather conditions, you can get a simpler answer to that question by choosing a club, choosing Away performance and then seeing how they did against Stoke on the table that appears. Inspiration for Data Science can come from anywhere, so thank you for the question!", tags$br(), tags$strong("Funny how Manchester United's worst home performance is against Manchester City!")),
+                    tags$div(class = "widget-user-header bg-aqua-active text-center",
+                        h4("Inspiration for this tool:"),
+                        p("A fan from Plaantik asked which team can make it on a cold rainy night at Stoke and I personally thought it was funny and fascinating. Although, it's hard to get data for weather conditions, you can get a simpler answer to that question by choosing a club, choosing Away performance and then seeing how they did against Stoke on the table that appears. Inspiration for Data Science can come from anywhere, so thank you for the question!", tags$br(), tags$strong("Funny how Manchester United's worst home performance is against Manchester City!"))
+                        ),
                     
                     # Providing user a dropdown to choose a team
                     
