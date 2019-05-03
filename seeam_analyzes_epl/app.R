@@ -50,7 +50,9 @@ ui <- dashboardPage(skin = 'red',
     
     # The overall title of the dashboard 
     
-    dashboardHeader(title = "Seeam @Plaantik"),
+    dashboardHeader(title = "Seeam@Plaantik - Analyzing the EPL",
+                    titleWidth = 400),
+    
     dashboardSidebar(
         
         # Creating the dashboard navigation meny with necessary icons. 
