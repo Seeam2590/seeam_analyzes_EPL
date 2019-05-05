@@ -1,13 +1,12 @@
 # Seeam analyzes the English Premier League
-## Final Project - Gov 1005 at Harvard
-This repository contains the final project for the class Gov 1005, Harvard College Spring 2019.
+## A project collaboration with Plaantik
 The project will be a data analysis app-project on the English Premier League
 The official website to the English Premier League: https://www.premierleague.com/ 
 
 ### The app can be found here: https://seeam2590.shinyapps.io/seeam_analyzes_epl/ 
 
 ## About the project
-Hi, I am Seeam Shahid Noor and I am very happy that you decided to check this project out. I was born and brought up in Dhaka, Bangladesh and Football (aka soccer) has always been a huge part of my life growing up. People outside my country might not know this but the football fan culture is huge in Bangladesh. So, when given the chance to present a data analysis project for the class Gov 1005 at Harvard I decided to take it to present some basic but interesting stats on the teams of the English Premier League, the most watched sports league in the world. https://www.premierleague.com/  
+Hi, I am Seeam Shahid Noor and I am very happy that you decided to check this project out. I was born and brought up in Dhaka, Bangladesh and Football (aka soccer) has always been a huge part of my life growing up. People outside my country might not know this but the football fan culture is huge in Bangladesh. So, when given the chance to present a data analysis project at Harvard I decided to take it to present some basic but interesting stats on the teams of the English Premier League, the most watched sports league in the world. https://www.premierleague.com/  
 
 ## Content
 The interesting stats presented have been divided into few categories to make them easy to access and understand. The sections can be accessed from the navigation dashboard on the left. The title of the sections are pretty self-explanatory to indicate what the stats will be about. For instance, 'Attack Stats' will show some interesting stats teams had during atacking plays. Finally, I have also decided to add few interesting stats from the Laliga so some of my best friends, who are fans of Barcelona and Real Madrid, doesn't miss out.
