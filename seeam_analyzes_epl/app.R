@@ -98,7 +98,7 @@ ui <- dashboardPage(skin = 'red',
                     # Credits to outside collaboration I did to get the app to more people once published
                     # Collaboration was also used to get better ideas
                     
-                    h3("Collaboration"),
+                    h3("Collaboration With Plaantik"),
                     p("The goal was to make the project something English Premier League Fans from Bangladesh would enjoy exploring.
 
 So, at first I took a look at the data available and made a short list of what interesting analysis I could be doing. Then, I reached out to ", tags$a("Plaantik", href = "http://plaantik.com/"),", a platform dedicated to football fans of Bangladesh with over ",   tags$a("81,500 Facebook followers", href = "https://www.facebook.com/plaantik/" ),". Plaantik found the idea of a data analysis project to be interesting and made a public Facebook post asking its followers what type of analysis they would be interested in knowing. The response was overwhelming and it can be found ,", tags$a("here", href = "https://www.facebook.com/plaantik/posts/2370059273026323"),".
