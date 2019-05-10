@@ -88,7 +88,7 @@ ui <- dashboardPage(skin = 'red',
                     # Background of the project
                     
                     h3("About the project"),
-                    p("Hi, I am Seeam Shahid Noor and I am very happy that you decided to check this project out. I was born and brought up in Dhaka, Bangladesh and Football (aka soccer) has always been a huge part of my life growing up. People outside my country might not know this but the football fan culture is huge in Bangladesh. So, when given the chance to present a data analysis project at Harvard, I decided to take it to present some basic but interesting stats on the teams of ", tags$a("the English Premier League,",href = "https://en.wikipedia.org/wiki/Premier_League")," the most watched sports league in the world."),
+                    p("Hi, I am", tags$a(" Seeam Shahid Noor", href = "https://www.linkedin.com/in/seeam-shahid-noor/")," and I am very happy that you decided to check this project out ",tags$a("(source code)", href = "https://github.com/Seeam2590/seeam_analyzes_EPL"),". I was born and brought up in Dhaka, Bangladesh and Football (aka soccer) has always been a huge part of my life growing up. People outside my country might not know this but the football fan culture is huge in Bangladesh. So, when given the chance to present a data analysis project at Harvard, I decided to take it to present some basic but interesting stats on the teams of ", tags$a("the English Premier League,",href = "https://en.wikipedia.org/wiki/Premier_League")," the most watched sports league in the world."),
                     
                     # Content of the project
                     
@@ -102,7 +102,7 @@ ui <- dashboardPage(skin = 'red',
                     p("The goal was to make the project something English Premier League Fans from Bangladesh would enjoy exploring.
 
 So, at first I took a look at the data available and made a short list of what interesting analysis I could be doing. Then, I reached out to ", tags$a("Plaantik", href = "http://plaantik.com/"),", a platform dedicated to football fans of Bangladesh with over ",   tags$a("81,500 Facebook followers", href = "https://www.facebook.com/plaantik/" ),". Plaantik found the idea of a data analysis project to be interesting and made a public Facebook post asking its followers what type of analysis they would be interested in knowing. The response was overwhelming and it can be found ,", tags$a("here", href = "https://www.facebook.com/plaantik/posts/2370059273026323"),".
-The Facebook post was a good way of gauging specific fan interest in analysis that they'd enjoy and provided a very good idea of where I can start. I remain grateful to Plaantik and to every fan who contributed in idea generation. I tried to add a few fun stats in the 'Fun Facts for Fans' section."),
+The Facebook post was a good way of gauging specific fan interest in analysis that they'd enjoy and provided a very good idea of where I can start. I remain grateful to Plaantik and to every fan who contributed in idea generation. I tried to add a few fun stats in the 'Fun Facts for Fans' section. Plaantik will be publishing this app on their ", tags$a("Twitter", href = "https://twitter.com/Plaantik/status/1126531828649578497?fbclid=IwAR1tWfyoaoZiaDhroAaDQSW4czdFpshxhPnKHvKn8DF8elN1IMn4zgwC00U"), " and Facebook page soon."),
                     
                     # Description of the data
                     
