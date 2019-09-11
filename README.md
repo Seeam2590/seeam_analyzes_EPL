@@ -5,7 +5,7 @@ The official website to the English Premier League: https://www.premierleague.co
 
 ### The app can be found here: https://seeam2590.shinyapps.io/seeam_analyzes_epl/ 
 
-## About the project
+## About the Project
 Hi, I am Seeam Shahid Noor and I am very happy that you decided to check this project out. I was born and brought up in Dhaka, Bangladesh and Football (aka soccer) has always been a huge part of my life growing up. People outside my country might not know this but the football fan culture is huge in Bangladesh. So, when given the chance to present a data analysis project at Harvard I decided to take it to present some basic but interesting stats on the teams of the English Premier League, the most watched sports league in the world. https://www.premierleague.com/  
 
 ## Content
